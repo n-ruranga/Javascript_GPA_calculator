@@ -1,0 +1,334 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Main Content */
+main {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 2rem;
+}
+
+/* Sections */
+section {
+    margin-bottom: 2rem;
+}
+
+/* Input Section */
+.input-section {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+/* GPA Display */
+.gpa-section {
+    text-align: center;
+}
+
+.gpa-display {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin: 1rem 0;
+}
+
+.gpa-display h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.gpa-value {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.assignments-count {
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+/* Assignments Section */
+.assignments-section h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.assignments-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.assignment-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    animation: slideIn 0.3s ease;
+}
+
+.assignment-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.assignment-info h4 {
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.assignment-info p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.grade-badge {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    min-width: 60px;
+    text-align: center;
+    margin-right: 1rem;
+}
+
+.assignment-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Instructions */
+.instructions {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.tip-box h4 {
+    color: #856404;
+    margin-bottom: 0.5rem;
+}
+
+.tip-box ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tip-box li {
+    padding: 0.25rem 0;
+    color: #856404;
+}
+
+.tip-box li::before {
+    content: "✓ ";
+    color: #28a745;
+    font-weight: bold;
+}
+
+kbd {
+    background: #333;
+    color: white;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: white;
+    opacity: 0.8;
+    padding: 1rem;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.gpa-updated {
+    animation: pulse 0.5s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+    
+    .gpa-value {
+        font-size: 3rem;
+    }
+    
+    .assignment-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .assignment-actions {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .gpa-value {
+        font-size: 2.5rem;
+    }
+}
