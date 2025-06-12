@@ -223,3 +223,216 @@ function removeAssignment(id) {
         console.log('🗑️ Assignment removed:', removedAssignment);
     }
 }
+
+/**
+ * Data Persistence (localStorage)
+ */
+function saveToStorage() {
+    try {
+        const dataToSave = {
+            assignments: assignments,
+            assignmentIdCounter: assignmentIdCounter,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Note: In Claude artifacts, localStorage is not available
+        // This code would work in a real browser environment
+        if (typeof Storage !== 'undefined') {
+            localStorage.setItem('gpaCalculatorData', JSON.stringify(dataToSave));
+            console.log('💾 Data saved to localStorage');
+        }
+    } catch (error) {
+        console.warn('⚠️ Could not save to localStorage:', error.message);
+    }
+}
+
+function loadFromStorage() {
+    try {
+        // Note: In Claude artifacts, localStorage is not available
+        // This code would work in a real browser environment
+        if (typeof Storage !== 'undefined') {
+            const savedData = localStorage.getItem('gpaCalculatorData');
+            
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                assignments = parsedData.assignments || [];
+                assignmentIdCounter = parsedData.assignmentIdCounter || 1;
+                
+                console.log('📂 Data loaded from localStorage');
+                console.log(`Found ${assignments.length} saved assignments`);
+            }
+        }
+    } catch (error) {
+        console.warn('⚠️ Could not load from localStorage:', error.message);
+        // Reset to default state
+        assignments = [];
+        assignmentIdCounter = 1;
+    }
+}
+
+/**
+ * Console Logging Feature (Press 'S')
+ */
+function logAllDataToConsole() {
+    console.clear();
+    console.log('📊 === GPA CALCULATOR DATA DUMP ===');
+    console.log('🎓 Current GPA:', calculateGPA());
+    console.log('📝 Total Assignments:', assignments.length);
+    console.log('');
+    
+    if (assignments.length > 0) {
+        console.log('📋 All Assignments:');
+        console.table(assignments);
+        
+        console.log('');
+        console.log('📈 Grade Distribution:');
+        const gradeDistribution = assignments.reduce((dist, assignment) => {
+            const grade = Math.floor(assignment.grade);
+            dist[grade] = (dist[grade] || 0) + 1;
+            return dist;
+        }, {});
+        console.table(gradeDistribution);
+        
+        console.log('');
+        console.log('📊 Statistics:');
+        const grades = assignments.map(a => a.grade);
+        console.log('• Highest Grade:', Math.max(...grades));
+        console.log('• Lowest Grade:', Math.min(...grades));
+        console.log('• Average (GPA):', calculateGPA());
+    } else {
+        console.log('No assignments found.');
+    }
+    
+    console.log('');
+    console.log('💾 Raw Data (JSON):');
+    console.log(JSON.stringify({
+        assignments: assignments,
+        gpa: calculateGPA(),
+        totalAssignments: assignments.length,
+        exportDate: new Date().toISOString()
+    }, null, 2));
+    
+    // Visual feedback
+    showFeedback('Data logged to console! Check browser dev tools (F12)', 'success');
+}
+
+/**
+ * Utility Functions
+ */
+function clearInputFields() {
+    assignmentNameInput.value = '';
+    assignmentGradeInput.value = '';
+    assignmentNameInput.focus();
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showFeedback(message, type = 'info') {
+    // Create feedback element
+    const feedback = document.createElement('div');
+    feedback.className = `feedback feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+        word-wrap: break-word;
+    `;
+    
+    // Set background color based on type
+    const colors = {
+        success: '#28a745',
+        error: '#e74c3c',
+        info: '#667eea'
+    };
+    feedback.style.backgroundColor = colors[type] || colors.info;
+    
+    // Add to page
+    document.body.appendChild(feedback);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            if (feedback.parentNode) {
+                feedback.parentNode.removeChild(feedback);
+            }
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Additional Features & Enhancements
+ */
+
+// Export data functionality
+function exportData() {
+    const dataToExport = {
+        assignments: assignments,
+        gpa: calculateGPA(),
+        totalAssignments: assignments.length,
+        exportDate: new Date().toISOString()
+    };
+    
+    const dataStr = JSON.stringify(dataToExport, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `gpa-data-${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+// Grade letter conversion utility
+function getLetterGrade(numericGrade) {
+    if (numericGrade >= 4.5) return 'A';
+    if (numericGrade >= 3.5) return 'B';
+    if (numericGrade >= 2.5) return 'C';
+    if (numericGrade >= 1.5) return 'D';
+    return 'F';
+}
+
+// Development helpers
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    console.log('🔧 Development mode detected');
+    
+    // Add some sample data for testing
+    window.addSampleData = function() {
+        const sampleAssignments = [
+            { name: 'Math Quiz 1', grade: 4.5 },
+            { name: 'History Essay', grade: 3.8 },
+            { name: 'Science Lab Report', grade: 4.2 },
+            { name: 'English Presentation', grade: 4.0 }
+        ];
+        
+        sampleAssignments.forEach(sample => {
+            assignments.push({
+                id: assignmentIdCounter++,
+                name: sample.name,
+                grade: sample.grade,
+                dateAdded: new Date().toLocaleDateString()
+            });
+        });
+        
+        updateDisplay();
+        saveToStorage();
+        console.log('📝 Sample data added for testing');
+    };
+    
+    console.log('💡 Tip: Run addSampleData() to add test assignments');
+}
+
+console.log('✅ GPA Calculator script loaded successfully!');
